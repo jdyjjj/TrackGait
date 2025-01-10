@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # Copyright (c) 2014-2021 Megvii Inc. All rights reserved.
+import sys
 
 import cv2
 import numpy as np
@@ -43,9 +44,12 @@ def vis(img, boxes, scores, cls_ids, conf=0.5, class_names=None):
 
 
 colors = [(255,0,0),(0,255,0),(0,0,255),(0,0,0)]
+unknown_color = (128, 0, 128)  # 紫色
 def get_color(idx):
     if idx<=4:
         color = colors[idx-1]
+    elif idx == sys.maxsize:
+        return unknown_color
     else:
         idx = idx * 3
         color = ((37 * idx) % 255, (17 * idx) % 255, (29 * idx) % 255)

@@ -68,10 +68,10 @@ def main():
     gallery_probe4_result = compare(probe4_feat, gallery_feat)
 
     # write the result back to the video
-    writeresult(gallery_probe1_result, probe1_video_path, video_save_folder)
-    writeresult(gallery_probe2_result, probe2_video_path, video_save_folder)
-    writeresult(gallery_probe3_result, probe3_video_path, video_save_folder)
-    writeresult(gallery_probe4_result, probe4_video_path, video_save_folder)
+    writeresult(gallery_probe1_result, probe1_video_path, video_save_folder,gallery_video_name)
+    writeresult(gallery_probe2_result, probe2_video_path, video_save_folder,gallery_video_name)
+    writeresult(gallery_probe3_result, probe3_video_path, video_save_folder,gallery_video_name)
+    writeresult(gallery_probe4_result, probe4_video_path, video_save_folder,gallery_video_name)
 
 
 if __name__ == "__main__":
