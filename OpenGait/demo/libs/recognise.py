@@ -58,7 +58,30 @@ def gait_sil(sils, embs_save_path):
         feat[type] = {}
         feat[type][view] = embs
         feats[id].append(feat)        
-    return feats    
+    return feats
+
+def filter_pg_dict(pg_dict,pg_dicts):
+    # 构建反向映射字典
+    value_to_keys = {}
+    for key, value in pg_dict.items():
+        if value not in value_to_keys:
+            value_to_keys[value] = []  # 初始化一个空列表
+        value_to_keys[value].append(key)
+    # 输出结果
+    key_to_value = {}
+    for value, keys in value_to_keys.items():
+        if len(keys) > 1:
+            lastkey = keys[0]
+            min = pg_dicts[lastkey][0][1].item()
+            for key in keys[1:]:
+                dis = pg_dicts[key][0][1].item()
+                if dis < min:
+                    lastkey = key
+                    pg_dict[lastkey] = "undifined"
+                    min = dis
+                else:
+                    pg_dict[key] = "undifined"
+    return pg_dict
 
 def gaitfeat_compare(probe_feat:dict, gallery_feat:dict):
     """Compares the feature between probe and gallery
@@ -81,6 +104,7 @@ def gaitfeat_compare(probe_feat:dict, gallery_feat:dict):
         pg_dicts[probeid] = idsdict
     # print("=================== pg_dicts ===================")
     # print(pg_dicts)
+    pg_dict = filter_pg_dict(pg_dict,pg_dicts)
     return pg_dict
 
 def extract_sil(sil, save_path):

@@ -147,7 +147,7 @@ def track(video_path, video_save_folder):
         logger.info(f"save results to {res_file}")
     return track_results
 
-def writeresult(pgdict, video_path, video_save_folder):
+def writeresult(pgdict, video_path, video_save_folder, gallery_name):
     """Writes the recognition result back into the video
 
     Args:
@@ -166,8 +166,8 @@ def writeresult(pgdict, video_path, video_save_folder):
     fps = cap.get(cv2.CAP_PROP_FPS)
     os.makedirs(video_save_folder, exist_ok=True)
     video_name = video_path.split("/")[-1]
-    first_key = next(iter(pgdict))
-    gallery_name = pgdict[first_key].split("-")[0]
+    # first_key = next(iter(pgdict))
+    # gallery_name = pgdict[first_key].split("-")[0]
     probe_name = video_name
     # save_video_path = save_video_name.split(".")[0]+ "-After.mp4"
     save_video_name = "G-{}_P-{}".format(gallery_name, probe_name)
@@ -204,7 +204,11 @@ def writeresult(pgdict, video_path, video_save_folder):
                     pid = "{}-{:03d}".format(video_name, track_id)
                     tid = pgdict[pid]
                     # demo
-                    colorid = int(tid.split("-")[1])
+                    if tid == "undifined":
+                        # continue
+                        colorid = sys.maxsize
+                    else:
+                        colorid = int(tid.split("-")[1])
                     # colorid = track_id
                     vertical = tlwh[2] / tlwh[3] > 1.6
                     if tlwh[2] * tlwh[3] > 10 and not vertical:
